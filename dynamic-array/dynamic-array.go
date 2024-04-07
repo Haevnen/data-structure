@@ -52,7 +52,7 @@ func (da *DynamicArray[T]) Set(index int, value T) bool {
 func (da *DynamicArray[T]) Add(values ...T) {
 	da.expand(len(values))
 	for _, v := range values {
-		da.elements[da.size] = v
+		da.elements = append(da.elements, v)
 		da.size++
 	}
 }
@@ -87,8 +87,8 @@ func (da *DynamicArray[T]) Clear() {
 }
 
 func (da *DynamicArray[T]) String() string {
-	values := make([]string, da.size)
-	for _, val := range da.elements {
+	values := make([]string, 0, da.size)
+	for _, val := range da.elements[:da.size] {
 		values = append(values, fmt.Sprintf("%v", val))
 	}
 	return "[" + strings.Join(values, ", ") + "]"
@@ -96,7 +96,7 @@ func (da *DynamicArray[T]) String() string {
 
 func (da *DynamicArray[T]) Values() []T {
 	values := make([]T, da.size)
-	copy(values, da.elements)
+	copy(values, da.elements[:da.size])
 	return values
 }
 
@@ -104,20 +104,20 @@ func (da *DynamicArray[T]) Sort(comp func(x, y T) int) {
 	if da.size < 2 {
 		return
 	}
-	slices.SortFunc(da.elements, comp)
+	slices.SortFunc(da.elements[:da.size], comp)
 }
 
 // Private functions
 func (da *DynamicArray[T]) resize(cap int) {
 	da.capacity = cap
-	newElems := make([]T, cap)
-	copy(newElems, da.elements)
+	newElems := make([]T, 0, cap)
+	newElems = append(newElems, da.elements...)
 	da.elements = newElems
 }
 
 func (da *DynamicArray[T]) expand(n int) {
 	if da.size+n >= da.capacity {
-		da.resize(da.capacity * 2)
+		da.resize((da.capacity + n) * 2)
 	}
 }
 
