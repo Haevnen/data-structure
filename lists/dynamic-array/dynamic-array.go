@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+
+	"github.com/Haevnen/data-structure/lists"
 )
+
+var _ lists.List[any] = (*DynamicArray[any])(nil)
 
 // Comparable type support == operator (equality and inequality)
 // Ordered type support both equality checks and comparison. E.g., <, <=, >, >=
@@ -24,7 +28,7 @@ func New[T comparable](values ...T) *DynamicArray[T] {
 	return da
 }
 
-func (da *DynamicArray[T]) Len() int {
+func (da *DynamicArray[T]) Size() int {
 	return da.size
 }
 

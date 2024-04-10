@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	dynamic_array "github.com/Haevnen/data-structure/dynamic-array"
+	dynamic_array "github.com/Haevnen/data-structure/lists/dynamic-array"
 )
 
 func main() {
